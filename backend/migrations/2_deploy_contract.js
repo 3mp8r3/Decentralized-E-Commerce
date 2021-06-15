@@ -1,11 +1,3 @@
-/**
- * @author Pruthvi Kumar
- * @email pruthvikumar.123@gmail.com
- * @create date 2018-09-20 17:27:07
- * @modify date 2018-09-20 17:27:07
- * @desc Deployment desscription for all available solidity contracts.
-*/
-
 var Supplier = artifacts.require("./Supplier.sol");
 var Customer = artifacts.require("./Customer.sol");
 

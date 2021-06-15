@@ -1,11 +1,3 @@
-/**
- * @author Pruthvi Kumar
- * @email pruthvikumar.bk@anz.com
- * @create date 2018-09-21 13:09:20
- * @modify date 2018-09-21 13:09:20
- * @desc Client side code for connecting Suppliers to Ethereum backend!
- */
-
 import React, { Component } from 'react';
 import { supplierContract, customerContract, web3 } from "./EthereumSetup";
 import { Grid, Row, Col, Panel, Tabs, Tab, FormGroup, InputGroup, Button, FormControl, Table } from 'react-bootstrap';
@@ -52,7 +44,7 @@ class SuppliersClient extends Component {
         this.addNewItemToMarketBySupplier = this.addNewItemToMarketBySupplier.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.triggerSupplierContractEventListeners();
     }
 
@@ -64,7 +56,7 @@ class SuppliersClient extends Component {
                 console.log('[Event Logs]', eventLogs);
                 this.setState({
                     supplierContract_blockchainRecordedItemIds: [...this.state.supplierContract_blockchainRecordedItemIds,
-                        parseInt(eventLogs.args.idItem.toString())
+                    parseInt(eventLogs.args.idItem.toString())
                     ]
                 });
             }
@@ -76,11 +68,11 @@ class SuppliersClient extends Component {
                 console.log('[Event Logs]', eventLogs);
                 this.setState({
                     supplierContract_blockchainRecordedPurchaseOrderServices: [...this.state.supplierContract_blockchainRecordedPurchaseOrderServices,
-                        {
-                            'idOfCustomer': parseInt(eventLogs.args.idOfCustomer.toString()),
-                            'idOrder': parseInt(eventLogs.args.idOrder.toString()),
-                            'status': eventLogs.args.status
-                        }
+                    {
+                        'idOfCustomer': parseInt(eventLogs.args.idOfCustomer.toString()),
+                        'idOrder': parseInt(eventLogs.args.idOrder.toString()),
+                        'status': eventLogs.args.status
+                    }
                     ]
                 });
             }
@@ -91,10 +83,10 @@ class SuppliersClient extends Component {
                 console.error('[Event Listener Error]', err);
             } else {
                 console.log('[Event Logs]', eventLogs);
-                if (this.state.customerContract_blockchainRecordedPurchaseOrderIds.indexOf(parseInt(eventLogs.args.idOrder.toString()))  === -1){
+                if (this.state.customerContract_blockchainRecordedPurchaseOrderIds.indexOf(parseInt(eventLogs.args.idOrder.toString())) === -1) {
                     this.setState({
                         customerContract_blockchainRecordedPurchaseOrderIds: [...this.state.customerContract_blockchainRecordedPurchaseOrderIds,
-                            parseInt(eventLogs.args.idOrder.toString())
+                        parseInt(eventLogs.args.idOrder.toString())
                         ]
                     });
                 }
@@ -150,114 +142,114 @@ class SuppliersClient extends Component {
         });
     }
 
-    addNewItemToMarketBySupplier(e){
+    addNewItemToMarketBySupplier(e) {
         e.preventDefault();
         const itemName = e.target.elements.itemName.value;
         const price = e.target.elements.price.value;
         this.supplierContract_addItem(itemName, price);
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <Grid>
                     <Row className="show-grid">
                         <Col xs={12} md={6}>
-                        <Panel>
-                            <Panel.Heading>Supplier Section</Panel.Heading>
-                            <Panel.Body>
-                                <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-                                    <Tab eventKey={1} title="Add Items to Market">
-                                    <br/> <br/>
-                                        <form onSubmit={this.addNewItemToMarketBySupplier}>
-                                            <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Button>
-                                                <Button>Item Name </Button>
-                                                </InputGroup.Button>
-                                                <FormControl ref="itemName" name="itemName" placeholder="eg. Toy / Shirt / CoffeeMug etc.," type="text"/>
-                                            </InputGroup>
+                            <Panel>
+                                <Panel.Heading>Supplier Section</Panel.Heading>
+                                <Panel.Body>
+                                    <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+                                        <Tab eventKey={1} title="Add Items to Market">
+                                            <br /> <br />
+                                            <form onSubmit={this.addNewItemToMarketBySupplier}>
+                                                <FormGroup>
+                                                    <InputGroup>
+                                                        <InputGroup.Button>
+                                                            <Button>Item Name </Button>
+                                                        </InputGroup.Button>
+                                                        <FormControl ref="itemName" name="itemName" placeholder="eg. Toy / Shirt / CoffeeMug etc.," type="text" />
+                                                    </InputGroup>
 
-                                            <InputGroup>
-                                                <InputGroup.Button>
-                                                <Button>Price <small>(USD)</small></Button>
-                                                </InputGroup.Button>
-                                                <FormControl ref="price" name="price" placeholder="Price per unit in USD" type="number"/>
-                                            </InputGroup>
-                                            </FormGroup>
+                                                    <InputGroup>
+                                                        <InputGroup.Button>
+                                                            <Button>Price <small>(USD)</small></Button>
+                                                        </InputGroup.Button>
+                                                        <FormControl ref="price" name="price" placeholder="Price per unit in USD" type="number" />
+                                                    </InputGroup>
+                                                </FormGroup>
 
-                                            <FormGroup>
-                                            <Button bsStyle="primary" label="Login" id="loginButton" type="submit" active>Add to Market</Button>
-                                            </FormGroup>
-                                        </form>
-                                    </Tab>
-                                    <Tab eventKey={2} title="Process Order(s)">
-                                        <h4>Order details</h4>
-                                        <small>Click on Order to process/complete it!</small>
-                                        <Table striped bordered condensed hover>
-                                            <thead>
-                                                <tr>
-                                                <th>Order ID</th>
-                                                <th>Customer Name</th>
-                                                <th>Item Name</th>
-                                                <th>Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.customerContract_blockchainRecordedPurchaseOrderIds.map(orderId => {
-                                                const orderDetails = this.customerContract_getOrderDetails(orderId);
-                                                const orderedItemName = web3.toUtf8(String(orderDetails).split(',')[0]);
-                                                const orderedItemQuantity = parseInt(String(orderDetails).split(',')[1]);
+                                                <FormGroup>
+                                                    <Button bsStyle="primary" label="Login" id="loginButton" type="submit" active>Add to Market</Button>
+                                                </FormGroup>
+                                            </form>
+                                        </Tab>
+                                        <Tab eventKey={2} title="Process Order(s)">
+                                            <h4>Order details</h4>
+                                            <small>Click on Order to process/complete it!</small>
+                                            <Table striped bordered condensed hover>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Item Name</th>
+                                                        <th>Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state.customerContract_blockchainRecordedPurchaseOrderIds.map(orderId => {
+                                                        const orderDetails = this.customerContract_getOrderDetails(orderId);
+                                                        const orderedItemName = web3.toUtf8(String(orderDetails).split(',')[0]);
+                                                        const orderedItemQuantity = parseInt(String(orderDetails).split(',')[1]);
 
-                                                return (<tr className="pointIt" onClick={() => this.supplierContract_processOrder(orderId, 1)}>
-                                                    <td>
-                                                    {orderId}
-                                                    </td>
-                                                    <td>
-                                                    John Snow
-                                                    </td>
-                                                    <td>
-                                                    {orderedItemName}
-                                                    </td>
-                                                    <td>
-                                                    {orderedItemQuantity}
-                                                    </td>
-                                                </tr>);
-                                                }
-                                            )}
-                                            </tbody>
+                                                        return (<tr className="pointIt" onClick={() => this.supplierContract_processOrder(orderId, 1)}>
+                                                            <td>
+                                                                {orderId}
+                                                            </td>
+                                                            <td>
+                                                                John Snow
+                                                            </td>
+                                                            <td>
+                                                                {orderedItemName}
+                                                            </td>
+                                                            <td>
+                                                                {orderedItemQuantity}
+                                                            </td>
+                                                        </tr>);
+                                                    }
+                                                    )}
+                                                </tbody>
                                             </Table>
 
                                             <h4>Pocessed Order(s)</h4>
                                             <Table striped bordered condensed hover>
                                                 <thead>
                                                     <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Customer Name</th>
-                                                    <th>Order Completed</th>
+                                                        <th>Order ID</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Order Completed</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {this.state.supplierContract_blockchainRecordedPurchaseOrderServices.map(po => {
-                                                    return (<tr>
-                                                        <td>
-                                                        {po.idOrder}
-                                                        </td>
-                                                        <td>
-                                                        John Snow
-                                                        </td>
-                                                        <td>
-                                                        {po.status === true ? 'Completed' : 'InProgress'}
-                                                        </td>
-                                                    </tr>);
+                                                        return (<tr>
+                                                            <td>
+                                                                {po.idOrder}
+                                                            </td>
+                                                            <td>
+                                                                John Snow
+                                                            </td>
+                                                            <td>
+                                                                {po.status === true ? 'Completed' : 'InProgress'}
+                                                            </td>
+                                                        </tr>);
                                                     }
-                                                )}
+                                                    )}
                                                 </tbody>
                                             </Table>
-                                    </Tab>
+                                        </Tab>
                                     </Tabs>
-                            </Panel.Body>
-                        </Panel>
+                                </Panel.Body>
+                            </Panel>
                         </Col>
                     </Row>
                 </Grid>
