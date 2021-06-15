@@ -6,7 +6,7 @@ import SuppliersClient from './Suppliers';
 
 class App extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {}
   }
@@ -27,14 +27,14 @@ class App extends Component {
           6. Show order completed in Customer section.
         */}
         <Grid>
-            <Row className="show-grid">
-                <Col xs={12} md={6}>
-                  <CustomersClient />
-                </Col>
-                <Col xs={12} md={6}>
-                  <SuppliersClient />
-                </Col>
-            </Row>
+          <Row className="show-grid">
+            <Col xs={12} md={6}>
+              <CustomersClient />
+            </Col>
+            <Col xs={12} md={6}>
+              <SuppliersClient />
+            </Col>
+          </Row>
         </Grid>
       </div>
     );

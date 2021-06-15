@@ -1,11 +1,4 @@
 /**
- * @author Pruthvi Kumar
- * @email pruthvikumar.123@gmail.com
- * @create date 2018-09-20 17:43:13
- * @modify date 2018-09-20 17:43:13
- * @desc Web3 setup to bridge ethereum backend to react frontend!
- */
-
 import Web3 from 'web3';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8484"));
@@ -211,7 +204,7 @@ const supplierContract = web3.eth.contract(supplierABI).at(supplierAddress);
 const customerContract = web3.eth.contract(customerABI).at(customerAddress);
 
 export {
-    supplierContract,
-    customerContract,
-    web3
+		supplierContract,
+		customerContract,
+		web3
 };

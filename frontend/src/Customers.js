@@ -1,11 +1,3 @@
-/**
- * @author Pruthvi Kumar
- * @email pruthvikumar.bk@anz.com
- * @create date 2018-09-21 13:08:57
- * @modify date 2018-09-21 13:08:57
- * @desc Client side ocde for connecting Customers to Ethereum backend!
- */
-
 import React, { Component } from 'react';
 import { supplierContract, customerContract, web3 } from "./EthereumSetup";
 import { Grid, Row, Col, Panel, Tabs, Tab, Table } from 'react-bootstrap';
@@ -51,7 +43,7 @@ class CustomersClient extends Component {
         this.purchaseThisItem = this.purchaseThisItem.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.triggerCustomerContractEventListeners();
     }
 
@@ -64,7 +56,7 @@ class CustomersClient extends Component {
                 console.log('[Event Logs]', eventLogs);
                 this.setState({
                     supplierContract_blockchainRecordedItemIds: [...this.state.supplierContract_blockchainRecordedItemIds,
-                        parseInt(eventLogs.args.idItem.toString())
+                    parseInt(eventLogs.args.idItem.toString())
                     ]
                 });
             }
@@ -77,7 +69,7 @@ class CustomersClient extends Component {
                 console.log('[Event Logs]', eventLogs);
                 this.setState({
                     customerContract_blockchainRecordedPurchaseOrderIds: [...this.state.customerContract_blockchainRecordedPurchaseOrderIds,
-                        parseInt(eventLogs.args.idOrder.toString())
+                    parseInt(eventLogs.args.idOrder.toString())
                     ]
                 });
             }
@@ -88,7 +80,7 @@ class CustomersClient extends Component {
                 console.error('[Event Listener Error]', err);
             } else {
                 console.log('[Event Logs]', eventLogs);
-                if (eventLogs.args.status){
+                if (eventLogs.args.status) {
                     this.customerContract_recieveItem(parseInt(eventLogs.args.idOrder.toString()));
                 }
             }
@@ -138,12 +130,12 @@ class CustomersClient extends Component {
         });
     }
 
-    purchaseThisItem(itemDetails){
+    purchaseThisItem(itemDetails) {
         this.customerContract_purchaseItem(itemDetails.itemName, itemDetails.quantity);
     }
 
 
-    render(){
+    render() {
         return (
             <div>
                 <Grid>
@@ -178,33 +170,33 @@ class CustomersClient extends Component {
                                             <Table striped bordered condensed hover>
                                                 <thead>
                                                     <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Item Name</th>
-                                                    <th>Quantity</th>
-                                                    <th>Order Completed</th>
+                                                        <th>Order ID</th>
+                                                        <th>Item Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Order Completed</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                    [... new Set(this.state.customerContract_blockchainRecordedPurchaseOrderIds)].map(orderId => {
-                                                        const orderDetails = this.customerContract_getOrderDetails(orderId);
+                                                        [... new Set(this.state.customerContract_blockchainRecordedPurchaseOrderIds)].map(orderId => {
+                                                            const orderDetails = this.customerContract_getOrderDetails(orderId);
 
-                                                        return (<tr>
-                                                            <td>
-                                                            {orderId}
-                                                            </td>
-                                                            <td>
-                                                            {web3.toUtf8(String(orderDetails).split(',')[0])}
-                                                            </td>
-                                                            <td>
-                                                            {parseInt(String(orderDetails).split(',')[1])}
-                                                            </td>
-                                                            <td>
-                                                            {String(orderDetails).split(',')[2]}
-                                                            </td>
-                                                        </tr>);
-                                                    }
-                                                )}
+                                                            return (<tr>
+                                                                <td>
+                                                                    {orderId}
+                                                                </td>
+                                                                <td>
+                                                                    {web3.toUtf8(String(orderDetails).split(',')[0])}
+                                                                </td>
+                                                                <td>
+                                                                    {parseInt(String(orderDetails).split(',')[1])}
+                                                                </td>
+                                                                <td>
+                                                                    {String(orderDetails).split(',')[2]}
+                                                                </td>
+                                                            </tr>);
+                                                        }
+                                                        )}
                                                 </tbody>
                                             </Table>
                                         </Tab>
